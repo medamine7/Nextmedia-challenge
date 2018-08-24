@@ -10,8 +10,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -22,15 +20,21 @@
     {{-- font-awesome --}}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 </head>
-<body>
+<body class="{{(Route::current()->getName() != 'welcome') ? 'grey' : ''}}">
     <div id="app">
         <div class="navbar">
             <ul>
-                <li><a href="">nearby shops</a></li>
-                <li><a href="">my preferred shops</a></li>
+                <li class='{{(Route::currentRouteName()=="nearbyShops")? "active":""}}'><a href="{{route('nearbyShops')}}">nearby shops</a></li>
+                <li class='{{(Route::currentRouteName()=="preferredShops")? "active":""}}'><a href="{{route('prefferedShops')}}">my preferred shops</a></li>
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a></li>
             </ul>
+            <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
         </div>
         @yield('content')
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

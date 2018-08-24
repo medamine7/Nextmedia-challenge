@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -15,8 +15,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name','email', 'location','password',
     ];
+
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -26,4 +28,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $connection = 'mongodb';
+    protected $collection = 'users';
+
+
+    public function shops(){
+        return $this->belongsToMany('App\Shop',null, '_users', '_shops');
+
+
+    }
 }

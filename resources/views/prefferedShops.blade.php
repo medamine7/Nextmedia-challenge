@@ -3,7 +3,7 @@
 @section('content')
 <div class="container cards-container">
     @foreach ($shops as $shop)
-    <div class="card">
+    <div class="card animated fadeInUp">
         <div class="card-header">
             {{$shop->name}}
         </div>
@@ -11,8 +11,7 @@
             <img src="{{$shop->picture}}" alt="">
         </div>
         <div class="card-footer">
-            <button><i class="far fa-thumbs-down"></i> DISLIKE</button>
-            <button><i class="far fa-thumbs-up"></i> LIKE</button>
+            <button @click="removeShop('{{$shop->_id}}')"><i class="far fa-thumbs-down"></i> REMOVE</button>
         </div>
     </div>
    @endforeach

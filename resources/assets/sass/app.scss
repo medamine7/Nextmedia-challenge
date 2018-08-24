@@ -9,11 +9,18 @@
 //fonts
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
+//animatecss
+@import "./animate.css";
 
 body{
 	font-family:roboto;
-	background:#e1e3e4;
 	margin:0;
+	overflow-x:hidden;
+}
+
+
+.grey{
+	background:#e1e3e4;
 }
 
 
@@ -71,6 +78,8 @@ a{
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	margin-bottom: 80px;	
+	box-sizing: border-box;
 }
 
 
@@ -159,4 +168,131 @@ a{
 			}
 		}
 	}
+}
+
+//welcome page
+
+.login-form button,
+.signup-form button{
+	border:none;
+	border-radius: 20px;
+	padding:10px;
+	background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+	font-family: roboto;
+	font-weight: bold;
+	cursor:pointer;
+	color:#101010;
+}
+
+.login-form{
+	height: 56px;
+	padding: 0 16px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background: #fff;
+
+	form{
+		display: flex;
+		position: relative;	
+	}
+	
+	button{
+		width:80px;
+		background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+	}	
+
+	.form-element{
+		margin: 0 10px;
+	}
+}
+
+.is-invalid{
+	color:#dc3545;
+}
+
+.invalid-feedback {
+  margin-top: 0.25rem;
+  font-size: 80%;
+  position:absolute;
+  color: #dc3545;
+}
+
+.welcome-container{
+	display: flex;	
+	flex-wrap: wrap;	
+}
+
+
+.auth-container{
+	flex:1;
+}
+
+.cool-input{
+	border: none;
+	border-radius: 20px;
+	padding: 10px;
+    border: 1px solid lightgray;
+    font-family:roboto;
+}
+
+.password-forgotten{
+	position: absolute;
+    right: 10px;
+    margin: 10px 0;
+    color: #aab8c2;
+    font-size: 14px;
+
+    &:hover{
+    	text-decoration:underline;
+    }
+}
+
+.art{
+	background: #686de0;
+	height: 100vh;
+	width: 50%;
+}
+
+.signup-form{
+
+	padding:80px 20px 20px;
+
+	input{
+		margin: 10px 0;
+		width:100%;
+		box-sizing:border-box;
+	}
+
+	h1{
+		color:#30336b;
+	}
+
+	button{
+		background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+		width:120px;
+		margin:auto;
+		display: block;
+	}
+
+	.invalid-feedback{
+		right:0;
+	}
+
+	.form-element{
+		position: relative;
+	}
+}
+
+
+
+@media(max-width: 1000px){
+	.art{
+		display:none;
+	}
+}
+
+
+.active{
+	text-decoration: underline;
 }

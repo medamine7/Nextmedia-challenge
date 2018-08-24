@@ -18,5 +18,24 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    methods: {
+    	likeShop(id){
+    		axios.post('/shop/like/'+id)
+    		.then(response=>{
+    			//
+    		})
+    		.catch()
+    	},
+
+
+    	dislikeShop(id){
+    		axios.post('/shop/dislike/'+id)
+    		.then(response=>{
+    			//
+    		})
+    		.catch()
+    	}
+    }
 });
