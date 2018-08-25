@@ -17,10 +17,7 @@ Route::get('/', function () {
 
 // Authentication Routes...
 Route::post('login', 'Auth\LoginController@login')->name("login");
-// Overriding the Laravel default login route
-Route::get('login', function(){
-	return redirect('/');
-});
+
 
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -35,14 +32,24 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/nearbyshops', function(){
 	return view('nearbyShops');
-})->name('nearbyShops');
+})->name('nearbyShops')->middleware('auth');
+
+
+
+//overriding laravel's default login route
+Route::get('/login', function(){
+	return redirect('/');
+});
 
 
 
 
 Route::get('/preferredshops', function(){
 	return view('preferredshops');
-})->name('preferredShops');
+})->name('preferredShops')->middleware('auth');
+
+
+
 
 
 

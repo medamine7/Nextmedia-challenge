@@ -46,11 +46,5 @@ class User extends Authenticatable
     }
 
 
-    // public function indifferent(){
-    //     return App\Shop::doesntHave('hasLiked', function ($query) {
-    //         $query->where('id', '!=', auth()->user()->id)
-    //     })
-    //     ->doesntHave('hasDisliked')->get() 
-    // }
 
 }

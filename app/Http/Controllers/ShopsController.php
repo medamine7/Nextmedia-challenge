@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Shop;
+use App\Dislikes_schedule;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -46,8 +47,8 @@ class ShopsController extends Controller
             '$geometry' => [
                 'type' => 'Point',
                 'coordinates' => [
-                    $user->location["coordinates"][1],
-                    $user->location["coordinates"][0],
+                    $user->location["coordinates"][1],  //longitude
+                    $user->location["coordinates"][0], //latitude
                 ],
             ]
         ])
@@ -81,9 +82,17 @@ class ShopsController extends Controller
 
     public function dislikeShop($shop_id){
         $user=Auth::user();
+        $user_id=Auth::id();
 
         $user->disliked()
         ->attach($shop_id);
+
+        $ds = new Dislikes_schedule([
+            "user_id" => $user_id,
+            "shop_id" => $shop_id
+        ]);
+
+        $ds->save();
 
         return response('disliked', 200);
 
