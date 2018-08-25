@@ -15,27 +15,10 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('shops-list', require('./components/shops-list.vue'));
+Vue.component('preferred-shops', require('./components/preferred-shops.vue'));
 
 const app = new Vue({
     el: '#app',
-
-    methods: {
-    	likeShop(id){
-    		axios.post('/shop/like/'+id)
-    		.then(response=>{
-    			//
-    		})
-    		.catch()
-    	},
-
-
-    	dislikeShop(id){
-    		axios.post('/shop/dislike/'+id)
-    		.then(response=>{
-    			//
-    		})
-    		.catch()
-    	}
-    }
+    
 });

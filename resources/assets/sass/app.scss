@@ -170,6 +170,18 @@ a{
 	}
 }
 
+
+#logout-button{
+	border:none;
+	border-radius: 20px;
+	font-family: roboto;
+	font-weight: bold;
+	cursor:pointer;
+    background-image: linear-gradient(120deg, #ee5354 0%, #da2f93 100%);
+	color: #fff;
+	padding: 10px 20px;
+}
+
 //welcome page
 
 .login-form button,
@@ -181,7 +193,7 @@ a{
 	font-family: roboto;
 	font-weight: bold;
 	cursor:pointer;
-	color:#101010;
+	color:#36336b;
 }
 
 .login-form{
@@ -295,4 +307,40 @@ a{
 
 .active{
 	text-decoration: underline;
+}
+
+
+button,
+#logout-button{
+	position:relative;
+	&:after{
+		position: absolute;
+		content:'';
+		left: 0;
+	    border-radius: inherit;
+		right: 0;
+		bottom: 0;
+		top: 0;
+		background: rgba(0,0,0,.2);
+		opacity:0;
+		transition: all .2s;
+	}
+
+	&:active:after{
+		opacity:1;
+	}
+}
+
+
+#username{
+	border-right: 1px solid #4a4853;
+    padding-right: 20px;
+    color: #4a4853;
+    font-weight: bold;
+}
+
+#preloader{
+    margin: auto;
+    display: block;
+    margin-top: 30vh;
 }

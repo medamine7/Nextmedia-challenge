@@ -12,7 +12,11 @@ class Shop extends Eloquent
 
 
 
-    public function users(){
-        return $this->belongsToMany('App\User',null, '_shops', '_users');
+    public function hasLiked(){
+        return $this->belongsToMany('App\User',null, '_liked', '_hasLiked');
+    }
+
+    public function hesDisliked(){
+        return $this->belongsToMany('App\User',null, '_disliked', '_hasDisliked');
     }
 }

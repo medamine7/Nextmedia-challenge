@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use App\Shop;
 
 class User extends Authenticatable
 {
@@ -33,9 +34,23 @@ class User extends Authenticatable
     protected $collection = 'users';
 
 
-    public function shops(){
-        return $this->belongsToMany('App\Shop',null, '_users', '_shops');
-
+    public function liked(){
+        return $this->belongsToMany('App\Shop',null, '_hasLiked', '_liked');
 
     }
+
+
+    public function disliked(){
+        return $this->belongsToMany('App\Shop',null, '_hasDisliked', '_disliked');
+
+    }
+
+
+    // public function indifferent(){
+    //     return App\Shop::doesntHave('hasLiked', function ($query) {
+    //         $query->where('id', '!=', auth()->user()->id)
+    //     })
+    //     ->doesntHave('hasDisliked')->get() 
+    // }
+
 }

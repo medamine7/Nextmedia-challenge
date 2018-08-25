@@ -24,31 +24,56 @@ class ShopsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getShops()
+    public function getNearbyShops()
     {
-        $user= Auth::user();
 
-        $shops = Shop::take(8)
+        $user= Auth::user();
+        $user_id= Auth::id();
+
+
+        //get ids of shops the user liked
+        $liked= $user->_liked ?: [];
+        //get ids of shops the user disliked
+        $disliked= $user->_disliked ?: [];
+
+
+        //get shops sorted by distance and then filter shops and get only the ones the user hasn't liked nor disliked
+        /***
+            HAD TO GO WITH THIS SINCE MongoDB DOESN'T USE A PIVOT TABLE FOR MANY TO MANY RELATIONSHIPS UNLIKE MySQL 
+        ***/
+
+        $shops = Shop::where('location', 'near', [              
+            '$geometry' => [
+                'type' => 'Point',
+                'coordinates' => [
+                    $user->location["coordinates"][1],
+                    $user->location["coordinates"][0],
+                ],
+            ]
+        ])
+        ->whereNotIn('_id', array_merge($liked,$disliked))
         ->get();
 
-        return view('nearbyShops',compact('shops'));
+
+        return response()->json(["shops"=>$shops],200);
     }
 
 
     public function getPreferredShops(){
         $user=Auth::user();
 
-        $shops= $user->_shops;
+        $shops= $user->liked;
 
-        dd($shops);
+        return response()->json(["shops"=>$shops],200);
     }
 
 
     public function likeShop($shop_id){
         $user=Auth::user();
 
-        $user->shops()
-        ->attach([$shop_id, 'action'=>'liked']);
+        //retrieve data the users has liked and add the new shop to them
+        $user->liked()
+        ->attach($shop_id);
 
         return response('liked', 200);    
     }
@@ -57,10 +82,21 @@ class ShopsController extends Controller
     public function dislikeShop($shop_id){
         $user=Auth::user();
 
-        $user->shops()
-        ->attach([$shop_id, 'action'=>'disliked']);
+        $user->disliked()
+        ->attach($shop_id);
 
         return response('disliked', 200);
 
+    }
+
+
+    public function unlikeShop($shop_id){
+        $user=Auth::user();
+
+        //retrieve data the users has liked and remove the specified shop out
+        $user->liked()
+        ->detach($shop_id);
+
+        return response('unliked', 200);
     }
 }

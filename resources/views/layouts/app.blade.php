@@ -24,9 +24,10 @@
     <div id="app">
         <div class="navbar">
             <ul>
+                <li id="username">{{auth()->user()->name}}</li>
                 <li class='{{(Route::currentRouteName()=="nearbyShops")? "active":""}}'><a href="{{route('nearbyShops')}}">nearby shops</a></li>
-                <li class='{{(Route::currentRouteName()=="preferredShops")? "active":""}}'><a href="{{route('prefferedShops')}}">my preferred shops</a></li>
-                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a></li>
+                <li class='{{(Route::currentRouteName()=="preferredShops")? "active":""}}'><a href="{{route('preferredShops')}}">my preferred shops</a></li>
+                <li><a id="logout-button" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a></li>
             </ul>
             <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
