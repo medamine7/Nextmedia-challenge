@@ -18,7 +18,7 @@ unzip it then run the following command : mongorestore --db nextmedia path/to/fi
 
 7 - (This step works on Unix based OS ) then set up your crontab by running: crontab -e then adding the next line to the file: 
     
-    * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+    * * * * * cd /path-to-your-project/artisan && php artisan schedule:run >> /dev/null 2>&1
 
 
 7 - run php artisan serve
