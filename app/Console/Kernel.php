@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->command('remove:dislikes')
-        ->cron('0 */2 * * *');
+        ->cron('0 */1 * * *');
     }
 
     /**
