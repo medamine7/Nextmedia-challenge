@@ -1,5 +1,11 @@
 <template>
 	<div>
+		<transition
+	    name="custom-classes-transition"
+	    enter-active-class="animated fadeInLeft"
+	    leave-active-class="animated fadeOutLeft">
+			<notice :msg="message" v-if="notice"></notice>
+		</transition>
 		<img v-show="loading" id="preloader" src="/img/preloader.svg" alt="">	
 		<transition-group
 		    name="custom-classes-transition"
@@ -25,12 +31,18 @@
 
 
 <script>
+	import notice from './notice';
 	export default {
 		data(){
 			return {
 				shops : [],
-				loading: true
+				message : '',
+				loading: true,
+				notice: false
 			}
+		},
+		components : {
+			notice,
 		},
 		created(){
 			var _this = this;
@@ -45,22 +57,35 @@
 		methods: {
 	    	likeShop(id,index){
 	    		var _this=this;
+    			_this.shops.splice(index, 1);
 	    		axios.post('/shop/like/'+id)
 	    		.then(response=>{
-	    			_this.shops.splice(index, 1);
+	    			_this.message="Added to your preferred shops.";
+	    			_this.showNotice();
 	    		})
 	    		.catch();
 	    	},
 
 
 	    	dislikeShop(id,index){
-	    		var _this=this;
+	    		var _this=this;	
+    			_this.shops.splice(index, 1);
 	    		axios.post('/shop/dislike/'+id)
 	    		.then(response=>{
-	    			_this.shops.splice(index, 1);
+	    			_this.message="Disliked.";
+	    			_this.showNotice();
 	    		})
 	    		.catch();
 	    	},
+
+
+	    	showNotice(){
+	    		this.notice=true;
+
+	    		setTimeout(()=>{
+	    			this.notice=false;
+	    		},3000);
+	    	}
 	    }
 	}
 </script>

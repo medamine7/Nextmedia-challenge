@@ -47437,6 +47437,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__notice__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__notice___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__notice__);
 //
 //
 //
@@ -47463,37 +47465,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      shops: [],
-      loading: true
-    };
-  },
-  created: function created() {
-    var _this = this;
-    axios.get('/getnearbyshops').then(function (response) {
-      _this.loading = false;
-      _this.shops = response.data.shops;
-    }).catch();
-  },
+	data: function data() {
+		return {
+			shops: [],
+			message: '',
+			loading: true,
+			notice: false
+		};
+	},
+
+	components: {
+		notice: __WEBPACK_IMPORTED_MODULE_0__notice___default.a
+	},
+	created: function created() {
+		var _this = this;
+		axios.get('/getnearbyshops').then(function (response) {
+			_this.loading = false;
+			_this.shops = response.data.shops;
+		}).catch();
+	},
 
 
-  methods: {
-    likeShop: function likeShop(id, index) {
-      var _this = this;
-      axios.post('/shop/like/' + id).then(function (response) {
-        _this.shops.splice(index, 1);
-      }).catch();
-    },
-    dislikeShop: function dislikeShop(id, index) {
-      var _this = this;
-      axios.post('/shop/dislike/' + id).then(function (response) {
-        _this.shops.splice(index, 1);
-      }).catch();
-    }
-  }
+	methods: {
+		likeShop: function likeShop(id, index) {
+			var _this = this;
+			_this.shops.splice(index, 1);
+			axios.post('/shop/like/' + id).then(function (response) {
+				_this.message = "Added to your preferred shops.";
+				_this.showNotice();
+			}).catch();
+		},
+		dislikeShop: function dislikeShop(id, index) {
+			var _this = this;
+			_this.shops.splice(index, 1);
+			axios.post('/shop/dislike/' + id).then(function (response) {
+				_this.message = "Disliked.";
+				_this.showNotice();
+			}).catch();
+		},
+		showNotice: function showNotice() {
+			var _this2 = this;
+
+			this.notice = true;
+
+			setTimeout(function () {
+				_this2.notice = false;
+			}, 3000);
+		}
+	}
 });
 
 /***/ }),
@@ -47507,6 +47535,19 @@ var render = function() {
   return _c(
     "div",
     [
+      _c(
+        "transition",
+        {
+          attrs: {
+            name: "custom-classes-transition",
+            "enter-active-class": "animated fadeInLeft",
+            "leave-active-class": "animated fadeOutLeft"
+          }
+        },
+        [_vm.notice ? _c("notice", { attrs: { msg: _vm.message } }) : _vm._e()],
+        1
+      ),
+      _vm._v(" "),
       _c("img", {
         directives: [
           {
@@ -47654,6 +47695,19 @@ var render = function() {
   return _c(
     "div",
     [
+      _c(
+        "transition",
+        {
+          attrs: {
+            name: "custom-classes-transition",
+            "enter-active-class": "animated fadeInLeft",
+            "leave-active-class": "animated fadeOutLeft"
+          }
+        },
+        [_vm.notice ? _c("notice", { attrs: { msg: _vm.message } }) : _vm._e()],
+        1
+      ),
+      _vm._v(" "),
       _c("img", {
         directives: [
           {
@@ -47734,6 +47788,14 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__notice__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__notice___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__notice__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47762,12 +47824,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
 			shops: [],
-			loading: true
+			loading: true,
+			notice: false
 		};
+	},
+
+	components: {
+		notice: __WEBPACK_IMPORTED_MODULE_0__notice___default.a
 	},
 	created: function created() {
 		var _this = this;
@@ -47780,9 +47848,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	methods: {
 		unlikeShop: function unlikeShop(id, index) {
 			var _this = this;
+			_this.shops.splice(index, 1);
 			axios.post('/shop/unlike/' + id).then(function (response) {
-				_this.shops.splice(index, 1);
+				_this.message = "Removed from your preferred shops.";
+				_this.showNotice();
 			}).catch();
+		},
+		showNotice: function showNotice() {
+			var _this2 = this;
+
+			this.notice = true;
+
+			setTimeout(function () {
+				_this2.notice = false;
+			}, 3000);
 		}
 	}
 });
@@ -47822,7 +47901,7 @@ exports = module.exports = __webpack_require__(45)(false);
 
 
 // module
-exports.push([module.i, "\n#shops-placeholder{\n\t    color: #9c99b1;\n\t    text-align: center;\n\t    padding: 20px;\n\t    border: 2px solid #9c99b1;\n\t    margin: auto;\n\t    max-width: 300px;\n    \tmargin-top: 30vh;\n}\n", ""]);
+exports.push([module.i, "\n#shops-placeholder{\n\t    color: #9c99b1;\n\t    text-align: center;\n\t    padding: 20px;\n\t    border: 2px solid #9c99b1;\n\t    margin: auto;\n\t    max-width: 300px;\n    \tmargin-top: 30vh;\n\t    position: absolute;\n    \tleft: 0;\n    \tright: 0;\n}\n", ""]);
 
 // exports
 
@@ -48087,6 +48166,133 @@ module.exports = function listToStyles (parentId, list) {
   return styles
 }
 
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(60)
+}
+var normalizeComponent = __webpack_require__(40)
+/* script */
+var __vue_script__ = __webpack_require__(62)
+/* template */
+var __vue_template__ = __webpack_require__(63)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\notice.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-392fbe22", Component.options)
+  } else {
+    hotAPI.reload("data-v-392fbe22", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(61);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(57)("3a3ffd3a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-392fbe22\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./notice.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-392fbe22\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./notice.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(45)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.notice{\n    position: absolute;\n    width: 200px;\n    height: 50px;\n    background: #e33f78;\n    left: 20px;\n    top: 40px;\n    font-size: 14px;\n    z-index: 5;\n    border-radius: 4px;\n    color: #fff;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    text-align: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: ["msg"]
+});
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "notice" }, [_vm._v(_vm._s(_vm.msg))])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-392fbe22", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
