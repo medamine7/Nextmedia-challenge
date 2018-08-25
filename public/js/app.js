@@ -47389,6 +47389,10 @@ function toComment(sourceMap) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(64)
+}
 var normalizeComponent = __webpack_require__(40)
 /* script */
 var __vue_script__ = __webpack_require__(50)
@@ -47397,7 +47401,7 @@ var __vue_template__ = __webpack_require__(51)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -47471,6 +47475,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47479,7 +47486,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			shops: [],
 			message: '',
 			loading: true,
-			notice: false
+			notice: false,
+			visibleShops: [],
+			lastIndex: 16
 		};
 	},
 
@@ -47491,6 +47500,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		axios.get('/getnearbyshops').then(function (response) {
 			_this.loading = false;
 			_this.shops = response.data.shops;
+			_this.visibleShops = response.data.shops.slice(0, _this.lastIndex);
 		}).catch();
 	},
 
@@ -47498,7 +47508,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	methods: {
 		likeShop: function likeShop(id, index) {
 			var _this = this;
-			_this.shops.splice(index, 1);
+			_this.visibleShops.splice(index, 1);
 			axios.post('/shop/like/' + id).then(function (response) {
 				_this.message = "Added to your preferred shops.";
 				_this.showNotice();
@@ -47506,7 +47516,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		dislikeShop: function dislikeShop(id, index) {
 			var _this = this;
-			_this.shops.splice(index, 1);
+			_this.visibleShops.splice(index, 1);
 			axios.post('/shop/dislike/' + id).then(function (response) {
 				_this.message = "Disliked.";
 				_this.showNotice();
@@ -47520,6 +47530,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			setTimeout(function () {
 				_this2.notice = false;
 			}, 3000);
+		},
+		loadMoreShops: function loadMoreShops() {
+			this.visibleShops = this.visibleShops.concat(this.shops.slice(this.lastIndex, this.lastIndex + 16));
+			this.lastIndex += 16;
 		}
 	}
 });
@@ -47534,6 +47548,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "shops-list-container" },
     [
       _c(
         "transition",
@@ -47571,7 +47586,7 @@ var render = function() {
             tag: "div"
           }
         },
-        _vm._l(_vm.shops, function(shop, index) {
+        _vm._l(_vm.visibleShops, function(shop, index) {
           return _c(
             "div",
             { key: shop._id, staticClass: "card animated fadeInUp" },
@@ -47618,6 +47633,27 @@ var render = function() {
             ]
           )
         })
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.loading,
+              expression: "!loading"
+            }
+          ]
+        },
+        [
+          _c(
+            "button",
+            { staticClass: "load-more-btn", on: { click: _vm.loadMoreShops } },
+            [_vm._v("Load more")]
+          )
+        ]
       )
     ],
     1
@@ -48253,7 +48289,7 @@ exports = module.exports = __webpack_require__(45)(false);
 
 
 // module
-exports.push([module.i, "\n.notice{\n    position: absolute;\n    width: 200px;\n    height: 50px;\n    background: #e33f78;\n    left: 20px;\n    top: 40px;\n    font-size: 14px;\n    z-index: 5;\n    border-radius: 4px;\n    color: #fff;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n.notice{\n    position: fixed;\n    width: 200px;\n    height: 50px;\n    background: #e33f78;\n    left: 20px;\n    top: 40px;\n    font-size: 14px;\n    z-index: 5;\n    border-radius: 4px;\n    color: #fff;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -48293,6 +48329,46 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-392fbe22", module.exports)
   }
 }
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(65);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(57)("bc517e32", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a00f876\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./shops-list.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a00f876\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./shops-list.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(45)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.load-more-btn{\n    border: none;\n    border-radius: 25px;\n    font-family: roboto;\n    font-weight: bold;\n    cursor: pointer;\n    background-image: linear-gradient(120deg, #ee5354 0%, #da2f93 100%);\n    color: #fff;\n    font-size: 20px;\n    display: block;\n    padding: 10px 20px;\n    margin: auto;\n}\n.shops-list-container{\n    margin-bottom: 80px;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

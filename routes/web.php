@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->name('welcome')->middleware("guest");
 
 // Authentication Routes...
 Route::post('login', 'Auth\LoginController@login')->name("login");
@@ -45,13 +45,14 @@ Route::get('/login', function(){
 
 
 Route::get('/preferredshops', function(){
-	return view('preferredshops');
+	return view('preferredShops');
 })->name('preferredShops')->middleware('auth');
 
 
 
 
 
+//API routes, supposed to go on  api.php and be secured with JWT or Passport but for the sake of the test let's just keep them here
 
 Route::get('/getnearbyshops', 'ShopsController@getNearbyShops');
 Route::get('/getpreferredshops', 'ShopsController@getPreferredShops');

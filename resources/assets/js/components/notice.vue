@@ -11,7 +11,7 @@
 
 <style>
 	.notice{
-	    position: absolute;
+	    position: fixed;
 	    width: 200px;
 	    height: 50px;
 	    background: #e33f78;

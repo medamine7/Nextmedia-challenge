@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="shops-list-container">
 		<transition
 	    name="custom-classes-transition"
 	    enter-active-class="animated fadeInLeft"
@@ -13,7 +13,7 @@
 		    leave-active-class="animated bounceOut"
 		    class="container cards-container"
 		    tag="div">
-		  	<div :key="shop._id" v-for="(shop,index) in shops" class="card animated fadeInUp">
+		  	<div :key="shop._id" v-for="(shop,index) in visibleShops" class="card animated fadeInUp">
 		        <div class="card-header">
 		            {{shop.name}}
 		        </div>
@@ -26,6 +26,9 @@
 		        </div>
 		    </div>
 		</transition-group>
+	    <div v-show="!loading">
+	    	<button class="load-more-btn" @click="loadMoreShops">Load more</button>
+	    </div>
 	</div>
 </template>
 
@@ -38,7 +41,9 @@
 				shops : [],
 				message : '',
 				loading: true,
-				notice: false
+				notice: false,
+				visibleShops: [],
+				lastIndex :16
 			}
 		},
 		components : {
@@ -50,6 +55,7 @@
 			.then(response=>{
 				_this.loading=false;
 				_this.shops=response.data.shops;
+				_this.visibleShops=response.data.shops.slice(0,_this.lastIndex);
 			})
 			.catch();
 		},
@@ -57,7 +63,7 @@
 		methods: {
 	    	likeShop(id,index){
 	    		var _this=this;
-    			_this.shops.splice(index, 1);
+    			_this.visibleShops.splice(index, 1);
 	    		axios.post('/shop/like/'+id)
 	    		.then(response=>{
 	    			_this.message="Added to your preferred shops.";
@@ -69,7 +75,7 @@
 
 	    	dislikeShop(id,index){
 	    		var _this=this;	
-    			_this.shops.splice(index, 1);
+    			_this.visibleShops.splice(index, 1);
 	    		axios.post('/shop/dislike/'+id)
 	    		.then(response=>{
 	    			_this.message="Disliked.";
@@ -85,7 +91,35 @@
 	    		setTimeout(()=>{
 	    			this.notice=false;
 	    		},3000);
+	    	},
+
+	    	loadMoreShops(){
+	    		this.visibleShops= this.visibleShops.concat(this.shops.slice(this.lastIndex,this.lastIndex+16));
+	    		this.lastIndex+=16;
 	    	}
+
+
 	    }
 	}
 </script>
+
+<style>
+	.load-more-btn{
+	    border: none;
+	    border-radius: 25px;
+	    font-family: roboto;
+	    font-weight: bold;
+	    cursor: pointer;
+	    background-image: linear-gradient(120deg, #ee5354 0%, #da2f93 100%);
+	    color: #fff;
+	    font-size: 20px;
+	    display: block;
+	    padding: 10px 20px;
+	    margin: auto;
+	}
+
+
+	.shops-list-container{
+	    margin-bottom: 80px;
+	}
+</style>
