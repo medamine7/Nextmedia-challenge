@@ -13907,8 +13907,10 @@ Vue.component('shops-list', __webpack_require__(49));
 Vue.component('preferred-shops', __webpack_require__(52));
 
 var app = new Vue({
-  el: '#app'
-
+  el: '#app',
+  data: {
+    mobileNav: false
+  }
 });
 
 /***/ }),

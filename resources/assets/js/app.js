@@ -20,5 +20,7 @@ Vue.component('preferred-shops', require('./components/preferred-shops.vue'));
 
 const app = new Vue({
     el: '#app',
-    
+    data : {
+		mobileNav : false
+    }
 });

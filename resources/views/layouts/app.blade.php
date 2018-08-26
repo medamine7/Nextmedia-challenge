@@ -22,12 +22,31 @@
 </head>
 <body class="{{(Route::current()->getName() != 'welcome') ? 'grey' : ''}}">
     <div id="app">
+        <div id="mobile-nav-toggle" @click="mobileNav=!mobileNav">
+            <i v-show="!mobileNav" class="fas fa-align-left"></i>
+            <i v-show="mobileNav" class="fas fa-times"></i>
+        </div>
+        <transition name="custom-classes-transition"
+            enter-active-class="animated fadeInLeft"
+            leave-active-class="animated fadeOutLeft">
+            <div class="mobile-navbar" v-show="mobileNav">
+                <ul>
+                    <li class="username">{{auth()->user()->name}}</li>
+                    <li class='{{(Route::currentRouteName()=="nearbyShops")? "active":""}}'><a href="{{route('nearbyShops')}}">nearby shops</a></li>
+                    <li class='{{(Route::currentRouteName()=="preferredShops")? "active":""}}'><a href="{{route('preferredShops')}}">my preferred shops</a></li>
+                    <li><a class="logout-button" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a></li>
+                </ul>
+                <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </div>
+        </transition>
         <div class="navbar">
             <ul>
-                <li id="username">{{auth()->user()->name}}</li>
+                <li class="username">{{auth()->user()->name}}</li>
                 <li class='{{(Route::currentRouteName()=="nearbyShops")? "active":""}}'><a href="{{route('nearbyShops')}}">nearby shops</a></li>
                 <li class='{{(Route::currentRouteName()=="preferredShops")? "active":""}}'><a href="{{route('preferredShops')}}">my preferred shops</a></li>
-                <li><a id="logout-button" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a></li>
+                <li><a class="logout-button" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a></li>
             </ul>
             <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
