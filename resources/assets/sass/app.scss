@@ -241,6 +241,7 @@ a{
 
 .auth-container{
 	flex:1;
+    box-shadow: 0 0 20px 3px rgba(0,0,0,.2);
 }
 
 .cool-input{
@@ -264,9 +265,11 @@ a{
 }
 
 .art{
-	background: #686de0;
-	height: 100vh;
-	width: 50%;
+	background-image: url(/img/clouds.jpg);
+    height: 100vh;
+    background-size: cover;
+    width: 50%;
+    background-position: center;
 }
 
 .signup-form,

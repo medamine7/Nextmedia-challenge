@@ -3602,6 +3602,8 @@ a {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  -webkit-box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
 }
 
 .cool-input {
@@ -3625,9 +3627,11 @@ a {
 }
 
 .art {
-  background: #686de0;
+  background-image: url(/img/clouds.jpg);
   height: 100vh;
+  background-size: cover;
   width: 50%;
+  background-position: center;
 }
 
 .signup-form,
